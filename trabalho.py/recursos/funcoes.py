@@ -29,8 +29,8 @@ def escreverDados(nome, pontos):
     else:
         dadosDict = {}
         
-    data_br = datetime.now().strftime("%d/%m/%Y")
-    dadosDict[nome] = (pontos, data_br)
+    data_hora_br = datetime.now().strftime("%d/%m/%Y às %H:%M")
+    dadosDict[nome] = (pontos, data_hora_br)
     
     banco = open(CAMINHO_BANCO,"w")
     banco.write(json.dumps(dadosDict))
