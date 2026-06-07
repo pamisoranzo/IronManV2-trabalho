@@ -2,6 +2,9 @@ import os, time
 import json
 from datetime import datetime
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CAMINHO_BANCO = os.path.join(BASE_DIR, "base.atitus")
+
 def limpar_tela():
     os.system("cls")
     
@@ -11,14 +14,14 @@ def aguarde(segundos):
 def inicializarBancoDeDados():
     # r - read, w - write, a - append
     try:
-        banco = open("base.atitus","r")
+        banco = open(CAMINHO_BANCO,"r")
     except:
         print("Banco de Dados Inexistente. Criando...")
-        banco = open("base.atitus","w")
+        banco = open(CAMINHO_BANCO,"w")
     
 def escreverDados(nome, pontos):
     # INI - inserindo no arquivo
-    banco = open("base.atitus","r")
+    banco = open(CAMINHO_BANCO,"r")
     dados = banco.read()
     banco.close()
     if dados != "":
@@ -29,14 +32,14 @@ def escreverDados(nome, pontos):
     data_br = datetime.now().strftime("%d/%m/%Y")
     dadosDict[nome] = (pontos, data_br)
     
-    banco = open("base.atitus","w")
+    banco = open(CAMINHO_BANCO,"w")
     banco.write(json.dumps(dadosDict))
     banco.close()
     
     # END - inserindo no arquivo
     
 def maior_pontuador():
-    banco = open("base.atitus","r")
+    banco = open(CAMINHO_BANCO,"r")
     dados = banco.read()
     banco.close()
     if dados != "":
