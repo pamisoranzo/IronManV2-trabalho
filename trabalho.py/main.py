@@ -30,7 +30,7 @@ fundo = pygame.transform.scale(fundo, (largura_fundo, tamanho[1]))
 fundoDead = carregar_imagem("backgroundDead.jpg", tamanho)
 fundoStart = carregar_imagem("bv_sonic.png")
 
-iron = carregar_imagem("IronMan.png", (116,51))
+iron = carregar_imagem("IronMan.png", (116,72))
 missel = carregar_imagem("missile.png", (125,25))
 carregar_musica("ironsound.mp3")
 fonteMenu = pygame.font.SysFont("comicsans",18)
@@ -155,8 +155,8 @@ def jogar():
         instrucaoPause = fonteMenu.render("Press Space to Pause Game.", True, branco)
         tela.blit(instrucaoPause, (10, 60))
             
-        pixelsPersonaX = list(range(posicaoXPersona, posicaoXPersona+116))
-        pixelsPersonaY = list(range(posicaoYPersona, posicaoYPersona+51))
+        pixelsPersonaX = list(range(posicaoXPersona, posicaoXPersona + iron.get_width()))
+        pixelsPersonaY = list(range(posicaoYPersona, posicaoYPersona + iron.get_height()))
         pixelsMisselX = list(range(posicaoXMissel, posicaoXMissel + 125))
         pixelsMisselY = list(range(posicaoYMissel, posicaoYMissel + 25))
         if  len( list( set(pixelsMisselY).intersection(set(pixelsPersonaY))) ) > dificuldade:
