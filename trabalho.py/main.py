@@ -30,7 +30,10 @@ fundo = pygame.transform.scale(fundo, (largura_fundo, tamanho[1]))
 fundoDead = carregar_imagem("backgroundDead.jpg", tamanho)
 fundoStart = carregar_imagem("bv_sonic.png")
 
-iron = carregar_imagem("IronMan.png", (116,72))
+iron = carregar_imagem("IronMan.png", (90,56))
+sonic_bola_frames = [
+    carregar_imagem(f"sonic_bola_{indice}.png", (50,50)) for indice in range(6)
+]
 missel = carregar_imagem("missile.png", (125,25))
 carregar_musica("ironsound.mp3")
 fonteMenu = pygame.font.SysFont("comicsans",18)
@@ -40,17 +43,20 @@ fonteInstrucao = pygame.font.SysFont("comicsans",15)
 
 def jogar():
     carregar_musica("ironsound.mp3")
-    topo_grama = 560
-    limite_inferior_personagem = topo_grama - iron.get_height()
+    topo_grama = 540
+    limite_superior_personagem = 360
     fundoMov1 = 0
     fundoMov2 = largura_fundo
     posicaoXPersona = 0
-    posicaoYPersona = limite_inferior_personagem
+    posicaoYPersona = topo_grama - iron.get_height()
     movimentoXPersona  = 0
     movimentoYPersona  = 0
     velocidadeMovPersona = 5
+    em_bola = False
+    frame_bola = 0
+    contador_animacao_bola = 0
     posicaoXMissel = tamanho[0]
-    posicaoYMissel = limite_inferior_personagem
+    posicaoYMissel = 430
     velocidadeMissel = 2
     pontos = 0
     pygame.mixer.music.play(-1)
@@ -81,19 +87,20 @@ def jogar():
             elif evento.type == pygame.KEYDOWN and evento.key == pygame.K_UP:
                 if not pausado:
                     movimentoYPersona = -velocidadeMovPersona
+                    em_bola = False
             elif evento.type == pygame.KEYDOWN and evento.key == pygame.K_DOWN:
                 if not pausado:
                     movimentoYPersona = velocidadeMovPersona
+                    em_bola = True
             elif evento.type == pygame.KEYUP and evento.key == pygame.K_UP:
                 movimentoYPersona = 0
             elif evento.type == pygame.KEYUP and evento.key == pygame.K_DOWN:
                 movimentoYPersona = 0
+                em_bola = False
             elif evento.type == pygame.KEYDOWN and evento.key == pygame.K_RIGHT:
-                if not pausado:
-                    movimentoXPersona = velocidadeMovPersona
+                movimentoXPersona = 0
             elif evento.type == pygame.KEYDOWN and evento.key == pygame.K_LEFT:
-                if not pausado:
-                    movimentoXPersona = -velocidadeMovPersona
+                movimentoXPersona = 0
             elif evento.type == pygame.KEYUP and evento.key == pygame.K_RIGHT:
                 movimentoXPersona = 0
             elif evento.type == pygame.KEYUP and evento.key == pygame.K_LEFT:
@@ -114,12 +121,14 @@ def jogar():
         
         posicaoXPersona = posicaoXPersona + movimentoXPersona          
         posicaoYPersona = posicaoYPersona + movimentoYPersona            
+        personagem_atual = sonic_bola_frames[frame_bola] if em_bola else iron
+        limite_inferior_personagem = topo_grama - personagem_atual.get_height()
         if posicaoXPersona < 0 :
             posicaoXPersona = 0
         elif posicaoXPersona > tamanho[0] - iron.get_width():
             posicaoXPersona = tamanho[0] - iron.get_width()
-        if posicaoYPersona < 450:
-            posicaoYPersona = 450
+        if posicaoYPersona < limite_superior_personagem:
+            posicaoYPersona = limite_superior_personagem
         elif posicaoYPersona > limite_inferior_personagem:
             posicaoYPersona = limite_inferior_personagem
             
@@ -129,7 +138,7 @@ def jogar():
             posicaoXMissel = tamanho[0]
             pontos = pontos + 1
             velocidadeMissel = velocidadeMissel + 1
-            posicaoYMissel = random.randint(450, topo_grama - missel.get_height())
+            posicaoYMissel = random.randint(410, 450)
                             
         tela.fill(branco)
         tela.blit(fundo, (fundoMov1,0) )
@@ -142,7 +151,14 @@ def jogar():
             fundoMov2 = largura_fundo
         
         
-        tela.blit(iron, (posicaoXPersona,posicaoYPersona))
+        if em_bola:
+            personagem_atual = sonic_bola_frames[frame_bola]
+            contador_animacao_bola += 1
+            if contador_animacao_bola >= 5:
+                contador_animacao_bola = 0
+                frame_bola = (frame_bola + 1) % len(sonic_bola_frames)
+
+        tela.blit(personagem_atual, (posicaoXPersona,posicaoYPersona))
         tela.blit( missel, (posicaoXMissel, posicaoYMissel) )
         texto = fonteMenu.render("Pontos: "+str(pontos), True, branco)
         tela.blit(texto, (700,15))
@@ -155,8 +171,8 @@ def jogar():
         instrucaoPause = fonteMenu.render("Press Space to Pause Game.", True, branco)
         tela.blit(instrucaoPause, (10, 60))
             
-        pixelsPersonaX = list(range(posicaoXPersona, posicaoXPersona + iron.get_width()))
-        pixelsPersonaY = list(range(posicaoYPersona, posicaoYPersona + iron.get_height()))
+        pixelsPersonaX = list(range(posicaoXPersona, posicaoXPersona + personagem_atual.get_width()))
+        pixelsPersonaY = list(range(posicaoYPersona, posicaoYPersona + personagem_atual.get_height()))
         pixelsMisselX = list(range(posicaoXMissel, posicaoXMissel + 125))
         pixelsMisselY = list(range(posicaoYMissel, posicaoYMissel + 25))
         if  len( list( set(pixelsMisselY).intersection(set(pixelsPersonaY))) ) > dificuldade:
