@@ -30,7 +30,7 @@ while True:
         print("Nome Inválido!")
         
 tamanho = (1000,700)
-pygame.display.set_caption("Sonic do Marcão")
+pygame.display.set_caption("Sonic da DeepWeb")
 icone = carregar_imagem("icone.png")
 pygame.display.set_icon(icone)
 relogio = pygame.time.Clock()

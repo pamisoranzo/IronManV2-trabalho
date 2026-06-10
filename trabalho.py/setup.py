@@ -4,10 +4,10 @@ executaveis = [
                cx_Freeze.Executable(
                    script="main.py", 
                    icon="bases/icone.ico",
-                    target_name="SonicMarcao.exe"
+                    target_name="Sonic da DeepWeb.exe"
                    ) ]
 cx_Freeze.setup(
-    name = "Sonic",
+    name = "Sonic da DeepWeb",
     options={
         "build_exe":{
             "packages":["pygame", "pytmx", "pyttsx3"],
