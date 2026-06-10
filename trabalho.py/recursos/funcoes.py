@@ -34,7 +34,7 @@ def escrever_dados(nome, pontos):
     else:
         dicionario_dados = {}
         
-    data_hora_br = data_e_hora.now().strftime("%d/%m/%Y às %H:%M")
+    data_hora_br = data_e_hora.now().strftime("%d/%m/%Y às %H:%M:%S")
     dicionario_dados[nome] = (pontos, data_hora_br)
     
     banco = open(CAMINHO_BANCO, "w")

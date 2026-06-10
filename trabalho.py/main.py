@@ -134,7 +134,7 @@ def jogar():
             retangulo_texto_continuar = texto_continuar.get_rect(center=botao_pausa.center)
             tela.blit(texto_continuar, retangulo_texto_continuar)
 
-            texto_pausado = pygame.font.Font(None, 80).render("PAUSADO", True, branco)
+            texto_pausado = pygame.font.Font(None, 80).render("PAUSE", True, branco)
             retangulo_pausado = texto_pausado.get_rect(
                 center=(tamanho[0] // 2, tamanho[1] // 2)
             )
@@ -231,7 +231,7 @@ def jogar():
         tela.blit(texto_pausa, retangulo_texto_pausa)
 
         instrucao_pausa = fonte_menu.render(
-            "Pressione Espaço para pausar o jogo.", True, branco
+            "Press Space to Pause Game.", True, branco
         )
         tela.blit(instrucao_pausa, (10, 60))
             
