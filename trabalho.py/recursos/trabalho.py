@@ -1,22 +1,26 @@
-import os
+import os as sistema_operacional
 
 import pygame
 
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PASTA_ASSETS = os.path.join(BASE_DIR, "assets")
+DIRETORIO_BASE = sistema_operacional.path.dirname(
+    sistema_operacional.path.dirname(
+        sistema_operacional.path.abspath(__file__)
+    )
+)
+PASTA_RECURSOS = sistema_operacional.path.join(DIRETORIO_BASE, "bases")
 
 
-def caminho_asset(nome):
-    return os.path.join(PASTA_ASSETS, nome)
+def caminho_recurso(nome):
+    return sistema_operacional.path.join(PASTA_RECURSOS, nome)
 
 
 def carregar_imagem(nome, tamanho=None):
-    imagem = pygame.image.load(caminho_asset(nome))
+    imagem = pygame.image.load(caminho_recurso(nome))
     if tamanho is not None:
         imagem = pygame.transform.scale(imagem, tamanho)
     return imagem
 
 
 def carregar_musica(nome):
-    pygame.mixer.music.load(caminho_asset(nome))
+    pygame.mixer.music.load(caminho_recurso(nome))

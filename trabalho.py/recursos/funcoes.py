@@ -1,63 +1,65 @@
-import os, time
-import json
-from datetime import datetime
+import os as sistema_operacional
+import time as tempo
+import json as formato_json
+from datetime import datetime as data_e_hora
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CAMINHO_BANCO = os.path.join(BASE_DIR, "base.atitus")
+DIRETORIO_BASE = sistema_operacional.path.dirname(
+    sistema_operacional.path.dirname(
+        sistema_operacional.path.abspath(__file__)
+    )
+)
+CAMINHO_BANCO = sistema_operacional.path.join(DIRETORIO_BASE, "log.dat")
 
 def limpar_tela():
-    os.system("cls")
+    sistema_operacional.system("cls")
     
 def aguarde(segundos):
-    time.sleep(segundos)
+    tempo.sleep(segundos)
     
-def inicializarBancoDeDados():
-    # r - read, w - write, a - append
+def inicializar_banco_de_dados():
     try:
-        banco = open(CAMINHO_BANCO,"r")
-    except:
+        banco = open(CAMINHO_BANCO, "r")
+        banco.close()
+    except FileNotFoundError:
         print("Banco de Dados Inexistente. Criando...")
-        banco = open(CAMINHO_BANCO,"w")
+        banco = open(CAMINHO_BANCO, "w")
+        banco.close()
     
-def escreverDados(nome, pontos):
-    # INI - inserindo no arquivo
-    banco = open(CAMINHO_BANCO,"r")
+def escrever_dados(nome, pontos):
+    banco = open(CAMINHO_BANCO, "r")
     dados = banco.read()
     banco.close()
     if dados != "":
-        dadosDict = json.loads(dados)
+        dicionario_dados = formato_json.loads(dados)
     else:
-        dadosDict = {}
+        dicionario_dados = {}
         
-    data_hora_br = datetime.now().strftime("%d/%m/%Y às %H:%M")
-    dadosDict[nome] = (pontos, data_hora_br)
+    data_hora_br = data_e_hora.now().strftime("%d/%m/%Y às %H:%M")
+    dicionario_dados[nome] = (pontos, data_hora_br)
     
-    banco = open(CAMINHO_BANCO,"w")
-    banco.write(json.dumps(dadosDict))
+    banco = open(CAMINHO_BANCO, "w")
+    banco.write(formato_json.dumps(dicionario_dados))
     banco.close()
-    
-    # END - inserindo no arquivo
     
 def maior_pontuador():
-    banco = open(CAMINHO_BANCO,"r")
+    banco = open(CAMINHO_BANCO, "r")
     dados = banco.read()
     banco.close()
     if dados != "":
-        dadosDict = json.loads(dados)
+        dicionario_dados = formato_json.loads(dados)
     else:
-        dadosDict = {}
+        dicionario_dados = {}
 
     nome_maior = None
-    dataJogada =  None
+    data_jogada = None
     maior_pontos = -1
 
-    for nome, info in dadosDict.items():
-
-        pontos = info[0]
+    for nome, informacoes in dicionario_dados.items():
+        pontos = informacoes[0]
         
         if pontos > maior_pontos:
             maior_pontos = pontos
             nome_maior = nome
-            dataJogada = info[1]            
+            data_jogada = informacoes[1]
 
-    return nome_maior, maior_pontos, dataJogada
+    return nome_maior, maior_pontos, data_jogada
