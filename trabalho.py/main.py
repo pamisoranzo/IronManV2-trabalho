@@ -1,5 +1,6 @@
 import math as matematica
 import pygame
+import pytmx
 import random as aleatorio
 from recursos.funcoes import (
     escrever_dados,
@@ -7,7 +8,7 @@ from recursos.funcoes import (
     limpar_tela,
     maior_pontuador,
 )
-from recursos.trabalho import carregar_imagem, carregar_musica
+from recursos.trabalho import caminho_recurso, carregar_imagem, carregar_musica
 
 limpar_tela()
 inicializar_banco_de_dados()
@@ -16,7 +17,9 @@ pygame.init()
 
 while True:
     nome = input("Informe o Nome do Competidor:")
-    if len(nome) > 0: 
+    if len(nome) > 0:
+        mensagens = pytmx.TiledMap(caminho_recurso("mensagens.tmx"))
+        print(mensagens.properties["boas_vindas"])
         break
     else:
         print("Nome Inválido!")

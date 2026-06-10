@@ -10,7 +10,7 @@ cx_Freeze.setup(
     name = "Sonic",
     options={
         "build_exe":{
-            "packages":["pygame"],
+            "packages":["pygame", "pytmx"],
             "include_files":["bases","recursos"]
         }
     }, executables = executaveis
