@@ -1,6 +1,7 @@
 import math as matematica
 import pygame
 import pytmx
+import pyttsx3
 import random as aleatorio
 from recursos.funcoes import (
     escrever_dados,
@@ -19,7 +20,11 @@ while True:
     nome = input("Informe o Nome do Competidor:")
     if len(nome) > 0:
         mensagens = pytmx.TiledMap(caminho_recurso("mensagens.tmx"))
-        print(mensagens.properties["boas_vindas"])
+        mensagem_boas_vindas = mensagens.properties["boas_vindas"]
+        voz = pyttsx3.init()
+        voz.setProperty("rate", 165)
+        voz.say(mensagem_boas_vindas)
+        voz.runAndWait()
         break
     else:
         print("Nome Inválido!")
